@@ -2,11 +2,11 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 
 
-router = APIRouter(prefix="/router1-router")
+router = APIRouter(prefix="/router1-router-teste")
 
 
-class ContaPagarResponse(BaseModel):
-    pass
+# class ContaPagarResponse(BaseModel)
+#     pass
 
 
 
