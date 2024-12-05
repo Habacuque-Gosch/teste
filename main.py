@@ -32,9 +32,21 @@ items = {
 }
 
 
+# @app.get("/itens/{item_id}")
+# def read_item(item_id: int, q: Union[str, None] = None):
+#     return {"item_id": item_id, "q": q}
+
 @app.get("/")
 def index():
     return {"items": items}
+
+@app.get('/details-item/{item_id}')
+def details_item(item_id: int):
+
+    item = items[item_id]
+    print(item)
+
+    return {'item': item}
 
 
 # @app.put("/itens/{item_id}")
