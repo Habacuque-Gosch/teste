@@ -7,7 +7,6 @@ from enum import Enum
 
 
 
-
 app = FastAPI()
 
 
@@ -48,7 +47,6 @@ def details_item(item_id: int):
 
     return {'item': item}
 
-
 # @app.put("/itens/{item_id}")
 # def update_item(item_id: int, item: Item):
 #     return {"item_name": item.name, "item_id": item_id}
@@ -57,5 +55,3 @@ def details_item(item_id: int):
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
-
-
