@@ -1,6 +1,6 @@
 import uvicorn
 from typing import Union
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import modules.routers.route1_router
 from enum import Enum
@@ -40,16 +40,49 @@ def index():
     return {"items": items}
 
 @app.get('/details-item/{item_id}')
-def details_item(item_id: int):
+def query_item_by_id(item_id: int) -> Item:
 
-    item = items[item_id]
-    print(item)
+    if item_id not in items: 
+        raise HTTPException(status_code=404, detail=f'Item with item_id={item_id} does not exist.')
+    
+    return items[item_id]
 
-    return {'item': item}
+select = dict[
+    str, str | int | float | Category | None
+]
+
+@app.get('/items/')
+def query_item_by_params(
+    name: str | None = None,
+    price: float | None = None,
+    count: int | None = None,
+    category: Category | None = None,
+
+) -> dict[str, select]:
+    def check_item(item: Item) -> bool:
+        return all(
+            (
+                name is None or item.name == name,
+                price is None or item.price == price,
+                count is None or item.count != count,
+                category is None or item.category is category,
+
+            )
+        )
+    
+    select = [item for item in items.values() if check_item(item)]
+
+    return {
+        "query": {"name": name, "price": price, "count": count, "category": category},
+        "select": select,
+    }
+
 
 # @app.put("/itens/{item_id}")
 # def update_item(item_id: int, item: Item):
 #     return {"item_name": item.name, "item_id": item_id}
+
+
 
 # app.include_router(modules.routers.route1_router.router)
 
