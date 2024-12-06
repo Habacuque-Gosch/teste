@@ -35,7 +35,7 @@ items = {
 # def read_item(item_id: int, q: Union[str, None] = None):
 #     return {"item_id": item_id, "q": q}
 
-@app.get("/")
+@app.get('/')
 def index():
     return {"items": items}
 
@@ -78,11 +78,45 @@ def query_item_by_params(
     }
 
 
-# @app.put("/itens/{item_id}")
-# def update_item(item_id: int, item: Item):
-#     return {"item_name": item.name, "item_id": item_id}
+@app.post('/')
+def add_item(item: Item) -> dict[str, Item]:
+    
+    if item.id in items:
+        HTTPException(status_code=400, detail=f'Item with {item.id=} already exists.')
 
+    items[item.id] = item
+    return {'added': item}
 
+@app.post('/update/{item_id}')
+def update_item(
+    item_id: int,
+    name: str | None = None,
+    price: float | None = None,
+    count: int | None = None,
+
+) -> dict[str, Item]:
+
+    if item_id not in items:
+        HTTPException(status_code=404, detail=f'Item with {item_id=} does not exist.')
+    if all(info is None for info in (name, price, count)):
+        raise HTTPException(
+            status_code=400, detail='No parameters provided for update.'
+        )
+
+    item = items[item_id]
+
+    # VERIFICATION !!!
+
+    # Response
+    return {'updated': item}
+
+@app.delete('/delete-item/{item_id}')
+def delete_item(item_id: int) -> dict[str, Item]:
+    if item_id not in items:
+        HTTPException(status_code=404, detail=f'Item with {item_id=} does not exist.')
+
+    item = items.pop(item_id)
+    return {'deleted': item}
 
 # app.include_router(modules.routers.route1_router.router)
 
