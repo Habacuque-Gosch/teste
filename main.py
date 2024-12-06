@@ -1,6 +1,6 @@
 import uvicorn
 from typing import Union
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Path, Query
 from pydantic import BaseModel
 import modules.routers.route1_router
 from enum import Enum
@@ -89,10 +89,10 @@ def add_item(item: Item) -> dict[str, Item]:
 
 @app.post('/update/{item_id}')
 def update_item(
-    item_id: int,
-    name: str | None = None,
-    price: float | None = None,
-    count: int | None = None,
+    item_id: int = Path(ge=0),
+    name: str | None = Query(default=None, min_length=1, max_length=8),
+    price: float | None = Query(default=None, gt=0.0),
+    count: int | None = Query(default=None, ge=0),
 
 ) -> dict[str, Item]:
 
