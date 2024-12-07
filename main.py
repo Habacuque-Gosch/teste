@@ -31,10 +31,6 @@ items = {
 }
 
 
-# @app.get("/itens/{item_id}")
-# def read_item(item_id: int, q: Union[str, None] = None):
-#     return {"item_id": item_id, "q": q}
-
 @app.get('/')
 def index():
     return {"items": items}
