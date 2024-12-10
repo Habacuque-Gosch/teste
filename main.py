@@ -80,8 +80,17 @@ def add_item(item: Item) -> dict[str, Item]:
     if item.id in items:
         HTTPException(status_code=400, detail=f'Item with {item.id=} already exists.')
 
+    # items.update({
+    #     'name': 'Apple', 
+    #     'price': 9.99, 
+    #     'count': 20, 
+    #     'id': 0, 
+    #     'category': Category.consumables,
+    # })
+
     items[item.id] = item
     return {'added': item}
+
 
 @app.post('/update/{item_id}')
 def update_item(
