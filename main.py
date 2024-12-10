@@ -114,7 +114,7 @@ def delete_item(item_id: int) -> dict[str, Item]:
     item = items.pop(item_id)
     return {'deleted': item}
 
-# app.include_router(modules.routers.route1_router.router)
+# ap.include_router(modules.routers.route1_router.router)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
